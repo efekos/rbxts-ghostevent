@@ -1,5 +1,5 @@
 import { ReplicatedStorage } from "@rbxts/services";
-import Pair from "../shared/Pair";
+import Pair from "./Pair";
 
 export default class ServerEventListener {
     private static pairList: Pair<string, ServerEventCallback>[] = [];

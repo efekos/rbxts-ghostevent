@@ -1,5 +1,5 @@
 import { ReplicatedStorage } from "@rbxts/services";
-import Pair from "../shared/Pair";
+import Pair from "./Pair";
 
 export default class ClientEventListener {
     private static pairList: Pair<string, Callback>[] = [];
@@ -30,7 +30,7 @@ export default class ClientEventListener {
             let connections = 0;
             evnetList.forEach(pair => {
                 event.OnClientEvent.Once(async(...args) => {
-                    await pair.object2(...args);
+                    await pair.object2(...args as unknown[]);
                     connections++;
                     if (connections === maxConnections) event.Destroy();
                 });
