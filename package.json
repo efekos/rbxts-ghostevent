@@ -4,7 +4,7 @@
   "description": "Prevent hackers from calling events",
   "main": "out/init.lua",
   "scripts": {
-    "build": "rbxtsc",
+    "build": "rbxtsc && npm pack",
     "watch": "rbxtsc -w",
     "prepublishOnly": "npm run build"
   },
