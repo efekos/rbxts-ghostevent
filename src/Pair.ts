@@ -1,4 +1,4 @@
-export default class Pair<K,V> {
+export class Pair<K,V> {
     object1:K
     object2:V
 
