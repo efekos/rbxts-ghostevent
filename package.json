@@ -1,5 +1,5 @@
 {
-  "name": "@rbxts/ghostevents",
+  "name": "@rbxts/ghostevent",
   "version": "1.0.0",
   "description": "",
   "main": "out/init.lua",
@@ -20,8 +20,12 @@
     "access": "public"
   },
   "devDependencies": {
-    "@rbxts/compiler-types": "^2.0.4-types.1",
+    "@rbxts/compiler-types": "^2.2.0-types.0",
     "@rbxts/types": "^1.0.746",
+    "@typescript-eslint/eslint-plugin": "^6.20.0",
+    "@typescript-eslint/parser": "^6.20.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-roblox-ts": "^0.0.36",
     "typescript": "^5.3.3"
   }
 }
