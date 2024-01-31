@@ -1,11 +1,17 @@
 import { ReplicatedStorage } from "@rbxts/services";
-import Pair from "./Pair";
+import {Pair}from "./index";
 
-export default class ServerEventListener {
+export class ServerEventListener {
     private static pairList: Pair<string, ServerEventCallback>[] = [];
 
-    static fire(name: string, player?: Player | undefined): void {
-        if (player === undefined) error("Player is required when using ServerEventListener", 2);
+    static fire(name: string, player: Player,...args:unknown[]): void {
+    
+        if (ReplicatedStorage.FindFirstChild("Events") === undefined) new Instance("Folder", ReplicatedStorage).Name = "Events";
+        const eventsFolder = ReplicatedStorage.WaitForChild("Events");
+
+        const event = new Instance("RemoteEvent", eventsFolder) as RemoteEvent;
+        event.Name = name;
+        event.FireClient(player,...args);
     }
 
     static registerListener(name: string, callback: ServerEventCallback): void {

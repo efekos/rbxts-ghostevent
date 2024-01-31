@@ -1,11 +1,16 @@
 import { ReplicatedStorage } from "@rbxts/services";
-import Pair from "./Pair";
+import {Pair} from "./index";
 
-export default class ClientEventListener {
+export class ClientEventListener {
     private static pairList: Pair<string, Callback>[] = [];
 
-    static fire(name: string): void {
-       
+    static fire(name: string, ...args: unknown[]): void {
+        if (ReplicatedStorage.FindFirstChild("Events") === undefined) new Instance("Folder", ReplicatedStorage).Name = "Events";
+        const eventsFolder = ReplicatedStorage.WaitForChild("Events");
+
+        const event = new Instance("RemoteEvent", eventsFolder) as RemoteEvent;
+        event.Name = name;
+        event.FireServer(...args);
     }
 
     static registerListener(name: string, callback: Callback): void {
@@ -18,7 +23,6 @@ export default class ClientEventListener {
 
     static handle(): void {
         if (ReplicatedStorage.FindFirstChild("Events") === undefined) new Instance("Folder", ReplicatedStorage).Name = "Events";
-
         const eventsFolder = ReplicatedStorage.WaitForChild("Events");
 
         eventsFolder.ChildAdded.Connect(i => {
@@ -29,7 +33,7 @@ export default class ClientEventListener {
             let maxConnections = evnetList.size();
             let connections = 0;
             evnetList.forEach(pair => {
-                event.OnClientEvent.Once(async(...args) => {
+                event.OnClientEvent.Once(async (...args) => {
                     await pair.object2(...args as unknown[]);
                     connections++;
                     if (connections === maxConnections) event.Destroy();
