@@ -1,7 +1,7 @@
 {
   "name": "@rbxts/ghostevents",
   "version": "1.0.0",
-  "description": "",
+  "description": "Prevent hackers from calling events",
   "main": "out/init.lua",
   "scripts": {
     "build": "rbxtsc",
@@ -9,8 +9,8 @@
     "prepublishOnly": "npm run build"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "efekos",
+  "license": "MIT",
   "types": "out/index.d.ts",
   "files": [
     "out",
@@ -26,5 +26,9 @@
   },
   "dependencies": {
     "@rbxts/services": "^1.5.3"
+  },
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/efekos/rbxts-ghostevent"
   }
 }
