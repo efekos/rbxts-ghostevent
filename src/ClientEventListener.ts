@@ -1,18 +1,18 @@
 import { ReplicatedStorage } from "@rbxts/services";
-import {Pair} from "./Pair";
+import { Pair } from "./Pair";
 
 export class ClientEventListener {
     private static pairList: Pair<string, Callback>[] = [];
+    private static handleCalled = false;
 
     static fire(name: string, ...args: unknown[]): void {
+        if (!this.handleCalled) error("ClientEventListener.handle() must be called before using ClientEventListener.fire()", 2);
         if (ReplicatedStorage.FindFirstChild("Events") === undefined) new Instance("Folder", ReplicatedStorage).Name = "Events";
         const eventsFolder = ReplicatedStorage.WaitForChild("Events");
 
-        const event = this.sendCreatePacket(name);
-        print("created event")
-        wait(0.01)
-        event.FireServer(...args);
-        print("fire event")
+        wait(0.01);
+        this.sendCreatePacket(name);
+        print("fire event");
     }
 
     static registerListener(name: string, callback: Callback): void {
@@ -23,26 +23,27 @@ export class ClientEventListener {
         return this.pairList.filter(r => r.object1 === name);
     }
 
-    private static sendCreatePacket(name:string):RemoteEvent{
+    private static sendCreatePacket(name: string) {
         const func = ReplicatedStorage.WaitForChild("ce") as RemoteFunction;
-        func.InvokeServer(name,false);
-        return ReplicatedStorage.WaitForChild("Events").WaitForChild(name) as RemoteEvent;
+        func.InvokeServer(name, false);
     }
 
-    private static sendDeletePacket(name:string){
+    private static sendDeletePacket(name: string) {
         const func = ReplicatedStorage.WaitForChild("ce") as RemoteFunction;
-        func.InvokeServer(name,true);
+        func.InvokeServer(name, true);
     }
 
     static handle(): void {
+        if(this.handleCalled) error("ClientEventListener.handle() is already called",2);
+        else this.handleCalled = true;
         if (ReplicatedStorage.FindFirstChild("Events") === undefined) new Instance("Folder", ReplicatedStorage).Name = "Events";
         const eventsFolder = ReplicatedStorage.WaitForChild("Events");
 
         eventsFolder.ChildAdded.Connect(i => {
-            print("received event")
+            print("received event");
             if (!i.IsA("RemoteEvent")) return;
             const event = i as RemoteEvent;
-        
+
             const evnetList = this.pairList.filter(r => r.object1 === event.Name);
             let maxConnections = evnetList.size();
             let connections = 0;
@@ -52,7 +53,7 @@ export class ClientEventListener {
                     connections++;
                     if (connections === maxConnections) {
                         event.Destroy();
-                        this.sendDeletePacket(event.Name)
+                        this.sendDeletePacket(event.Name);
                     }
                 });
             });
