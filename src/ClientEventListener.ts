@@ -8,11 +8,9 @@ export class ClientEventListener {
     static fire(name: string, ...args: unknown[]): void {
         if (!this.handleCalled) error("ClientEventListener.handle() must be called before using ClientEventListener.fire()", 2);
         if (ReplicatedStorage.FindFirstChild("Events") === undefined) new Instance("Folder", ReplicatedStorage).Name = "Events";
-        const eventsFolder = ReplicatedStorage.WaitForChild("Events");
 
         wait(0.01);
         this.sendCreatePacket(name);
-        print("fire event");
     }
 
     static registerListener(name: string, callback: Callback): void {
@@ -40,7 +38,6 @@ export class ClientEventListener {
         const eventsFolder = ReplicatedStorage.WaitForChild("Events");
 
         eventsFolder.ChildAdded.Connect(i => {
-            print("received event");
             if (!i.IsA("RemoteEvent")) return;
             const event = i as RemoteEvent;
 

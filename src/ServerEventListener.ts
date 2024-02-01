@@ -13,9 +13,7 @@ export class ServerEventListener {
 
         const event = new Instance("RemoteEvent", eventsFolder) as RemoteEvent;
         event.Name = name;
-        print("created event");
         event.FireClient(player, ...args);
-        print("fire event");
     }
 
     static registerListener(name: string, callback: ServerEventCallback): void {
