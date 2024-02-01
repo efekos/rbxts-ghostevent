@@ -25,8 +25,13 @@ export class ClientEventListener {
 
     private static sendCreatePacket(name:string):RemoteEvent{
         const func = ReplicatedStorage.WaitForChild("ce") as RemoteFunction;
-        func.InvokeServer(name);
+        func.InvokeServer(name,false);
         return ReplicatedStorage.WaitForChild("Events").WaitForChild(name) as RemoteEvent;
+    }
+
+    private static sendDeletePacket(name:string){
+        const func = ReplicatedStorage.WaitForChild("ce") as RemoteFunction;
+        func.InvokeServer(name,true);
     }
 
     static handle(): void {
@@ -45,7 +50,10 @@ export class ClientEventListener {
                 event.OnClientEvent.Once(async (...args) => {
                     await pair.object2(...args as unknown[]);
                     connections++;
-                    if (connections === maxConnections) event.Destroy();
+                    if (connections === maxConnections) {
+                        event.Destroy();
+                        this.sendDeletePacket(event.Name)
+                    }
                 });
             });
 

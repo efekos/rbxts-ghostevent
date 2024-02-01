@@ -1,19 +1,19 @@
 import { ReplicatedStorage } from "@rbxts/services";
-import {Pair}from "./Pair";
+import { Pair } from "./Pair";
 
 export class ServerEventListener {
     private static pairList: Pair<string, ServerEventCallback>[] = [];
 
-    static fire(name: string, player: Player,...args:unknown[]): void {
-    
+    static fire(name: string, player: Player, ...args: unknown[]): void {
+
         if (ReplicatedStorage.FindFirstChild("Events") === undefined) new Instance("Folder", ReplicatedStorage).Name = "Events";
         const eventsFolder = ReplicatedStorage.WaitForChild("Events");
 
         const event = new Instance("RemoteEvent", eventsFolder) as RemoteEvent;
         event.Name = name;
-        print("created event")
-        event.FireClient(player,...args);
-        print("fire event")
+        print("created event");
+        event.FireClient(player, ...args);
+        print("fire event");
     }
 
     static registerListener(name: string, callback: ServerEventCallback): void {
@@ -30,28 +30,17 @@ export class ServerEventListener {
         const eventsFolder = ReplicatedStorage.WaitForChild("Events");
 
         const f = ReplicatedStorage.WaitForChild("ce") as RemoteFunction;
-        f.OnServerInvoke = (player,name)=>{
-            new Instance("RemoteEvent",eventsFolder).Name = name as string;
-        }
-
-        eventsFolder.ChildAdded.Connect(i => {
-            print("received event")
-            wait(0.02)
-            if (!i.IsA("RemoteEvent")) return;
-            const event = i as RemoteEvent;
-
-            const evnetList = this.pairList.filter(r => r.object1 === event.Name);
-            let maxConnections = evnetList.size();
-            let connections = 0;
-            evnetList.forEach(pair => {
-                event.OnServerEvent.Once(async(player, ...args) => {
-                    await pair.object2(player, ...args);
-                    connections++;
-                    if (connections === maxConnections) event.Destroy();
+        f.OnServerInvoke = (player, b, a, ...args) => {
+            if (a) {
+                eventsFolder.WaitForChild(b as string).Destroy();
+            } else {
+                const eventList = this.pairList.filter(r => r.object1 === b);
+                eventList.forEach(p => {
+                    p.object2(player, ...args);
                 });
-            });
+            }
+        };
 
-        });
     }
 }
 
