@@ -8,7 +8,9 @@
     "watch": "rbxtsc -w",
     "prepublishOnly": "npm run build"
   },
-  "keywords": [],
+  "keywords": [
+    "roblox","roblox-ts","rbxts","roblox-event","event"
+  ],
   "author": "efekos",
   "license": "MIT",
   "types": "out/index.d.ts",
