@@ -4,7 +4,7 @@
   "description": "Prevent hackers from calling events",
   "main": "out/init.lua",
   "scripts": {
-    "build": "rbxtsc && npm pack",
+    "build": "rbxtsc",
     "watch": "rbxtsc -w",
     "prepublishOnly": "npm run build"
   },
@@ -31,6 +31,6 @@
   },
   "repository": {
     "type": "github",
-    "url": "https://github.com/efekos/rbxts-ghostevent"
+    "url": "git+https://github.com/efekos/rbxts-ghostevent.git"
   }
 }
