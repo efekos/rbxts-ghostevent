@@ -32,7 +32,7 @@ export class ClientEventListener {
     }
 
     static handle(): void {
-        if(this.handleCalled) error("ClientEventListener.handle() is already called",2);
+        if (this.handleCalled) error("ClientEventListener.handle() is already called", 2);
         else this.handleCalled = true;
         if (ReplicatedStorage.FindFirstChild("Events") === undefined) new Instance("Folder", ReplicatedStorage).Name = "Events";
         const eventsFolder = ReplicatedStorage.WaitForChild("Events");
