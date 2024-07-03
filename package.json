@@ -9,7 +9,11 @@
     "prepublishOnly": "npm run build"
   },
   "keywords": [
-    "roblox","roblox-ts","rbxts","roblox-event","event"
+    "roblox",
+    "roblox-ts",
+    "rbxts",
+    "roblox-event",
+    "event"
   ],
   "author": "efekos",
   "license": "MIT",
@@ -23,11 +27,11 @@
   },
   "devDependencies": {
     "@rbxts/compiler-types": "^2.2.0-types.0",
-    "@rbxts/types": "^1.0.746",
-    "typescript": "^5.3.3"
+    "@rbxts/types": "^1.0.788",
+    "typescript": "^5.5.3"
   },
   "dependencies": {
-    "@rbxts/services": "^1.5.3"
+    "@rbxts/services": "^1.5.4"
   },
   "repository": {
     "type": "github",
