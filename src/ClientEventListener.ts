@@ -10,7 +10,7 @@ export class ClientEventListener {
         if (ReplicatedStorage.FindFirstChild("Events") === undefined) new Instance("Folder", ReplicatedStorage).Name = "Events";
 
         wait(0.01);
-        this.sendCreatePacket(name);
+        this.sendCreatePacket(name,...args);
     }
 
     static registerListener(name: string, callback: Callback): void {
@@ -21,9 +21,9 @@ export class ClientEventListener {
         return this.pairList.filter(r => r.object1 === name);
     }
 
-    private static sendCreatePacket(name: string) {
+    private static sendCreatePacket(name: string,...args:unknown[]) {
         const func = ReplicatedStorage.WaitForChild("ce") as RemoteFunction;
-        func.InvokeServer(name, false);
+        func.InvokeServer(name, false,...args);
     }
 
     private static sendDeletePacket(name: string) {
